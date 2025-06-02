@@ -1,0 +1,436 @@
+[
+    {
+        "id": "2eac1bfcf0280e9d",
+        "type": "tab",
+        "label": "Flow 2",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "e8c5c7caa90551de",
+        "type": "file in",
+        "z": "2eac1bfcf0280e9d",
+        "name": "",
+        "filename": "C:\\Users\\Asus\\Downloads\\YOLO Result\\Real-time image detection\\detected.jpg",
+        "filenameType": "str",
+        "format": "",
+        "chunk": false,
+        "sendError": false,
+        "encoding": "none",
+        "allProps": false,
+        "x": 500,
+        "y": 200,
+        "wires": [
+            [
+                "e011247e63f71043"
+            ]
+        ]
+    },
+    {
+        "id": "574c16d3520f38b4",
+        "type": "image viewer",
+        "z": "2eac1bfcf0280e9d",
+        "name": "",
+        "width": 160,
+        "data": "payload",
+        "dataType": "msg",
+        "active": true,
+        "x": 1230,
+        "y": 80,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "31eb610ad6b555b9",
+        "type": "jimp-image",
+        "z": "2eac1bfcf0280e9d",
+        "name": "",
+        "data": "payload",
+        "dataType": "msg",
+        "ret": "img",
+        "parameter1": "",
+        "parameter1Type": "msg",
+        "parameter2": "",
+        "parameter2Type": "msg",
+        "parameter3": "",
+        "parameter3Type": "msg",
+        "parameter4": "",
+        "parameter4Type": "msg",
+        "parameter5": "",
+        "parameter5Type": "msg",
+        "parameter6": "",
+        "parameter6Type": "msg",
+        "parameter7": "",
+        "parameter7Type": "msg",
+        "parameter8": "",
+        "parameter8Type": "msg",
+        "sendProperty": "payload",
+        "sendPropertyType": "msg",
+        "parameterCount": 0,
+        "jimpFunction": "none",
+        "selectedJimpFunction": {
+            "name": "none",
+            "fn": "none",
+            "description": "Just loads the image.",
+            "parameters": []
+        },
+        "x": 1070,
+        "y": 120,
+        "wires": [
+            [
+                "574c16d3520f38b4"
+            ]
+        ]
+    },
+    {
+        "id": "e011247e63f71043",
+        "type": "function",
+        "z": "2eac1bfcf0280e9d",
+        "name": "toBuffer",
+        "func": "msg.payload = Buffer.from(msg.payload, \"base64\");\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 900,
+        "y": 120,
+        "wires": [
+            [
+                "31eb610ad6b555b9",
+                "bf021d2cc0566252"
+            ]
+        ]
+    },
+    {
+        "id": "405d61dd11660c0f",
+        "type": "function",
+        "z": "2eac1bfcf0280e9d",
+        "name": "Send email to user",
+        "func": "var AccidentImage = msg.payload;\nmsg.topic = 'YOLOv8m: Road Accident Detected';\nmsg.payload = \"Dear Hospital/Police,\\n\\nRoad accident has been detected at UCSI University.\\nPlease respond to the scene immediately.\";\nmsg.to = \"1001954392@ucsiuniversity.edu.my\";\nmsg.attachments = { filename: \"YOLO_Accident.png\", content: AccidentImage };\n\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1010,
+        "y": 280,
+        "wires": [
+            [
+                "cd53f6d1e86c45bf"
+            ]
+        ]
+    },
+    {
+        "id": "cd53f6d1e86c45bf",
+        "type": "e-mail",
+        "z": "2eac1bfcf0280e9d",
+        "server": "smtp.gmail.com",
+        "port": "465",
+        "authtype": "BASIC",
+        "saslformat": true,
+        "token": "oauth2Response.access_token",
+        "secure": true,
+        "tls": true,
+        "name": "",
+        "dname": "YOLO Alert System",
+        "x": 1250,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "bf021d2cc0566252",
+        "type": "jimp-image",
+        "z": "2eac1bfcf0280e9d",
+        "name": "",
+        "data": "payload",
+        "dataType": "msg",
+        "ret": "buf",
+        "parameter1": "",
+        "parameter1Type": "msg",
+        "parameter2": "",
+        "parameter2Type": "msg",
+        "parameter3": "",
+        "parameter3Type": "msg",
+        "parameter4": "",
+        "parameter4Type": "msg",
+        "parameter5": "",
+        "parameter5Type": "msg",
+        "parameter6": "",
+        "parameter6Type": "msg",
+        "parameter7": "",
+        "parameter7Type": "msg",
+        "parameter8": "",
+        "parameter8Type": "msg",
+        "sendProperty": "payload",
+        "sendPropertyType": "msg",
+        "parameterCount": 0,
+        "jimpFunction": "none",
+        "selectedJimpFunction": {
+            "name": "none",
+            "fn": "none",
+            "description": "Just loads the image.",
+            "parameters": []
+        },
+        "x": 810,
+        "y": 280,
+        "wires": [
+            [
+                "405d61dd11660c0f"
+            ]
+        ]
+    },
+    {
+        "id": "626732404a7e349c",
+        "type": "tcp in",
+        "z": "2eac1bfcf0280e9d",
+        "name": "",
+        "server": "server",
+        "host": "",
+        "port": "6000",
+        "datamode": "stream",
+        "datatype": "buffer",
+        "newline": "",
+        "topic": "",
+        "trim": false,
+        "base64": false,
+        "tls": "",
+        "x": 60,
+        "y": 320,
+        "wires": [
+            [
+                "d27b6900728d5cc0"
+            ]
+        ]
+    },
+    {
+        "id": "dd5f9ddf41ddc77a",
+        "type": "debug",
+        "z": "2eac1bfcf0280e9d",
+        "name": "debug 124",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 370,
+        "y": 500,
+        "wires": []
+    },
+    {
+        "id": "275aee688200a853",
+        "type": "tcp out",
+        "z": "2eac1bfcf0280e9d",
+        "name": "",
+        "host": "localhost",
+        "port": "6000",
+        "beserver": "client",
+        "base64": false,
+        "end": false,
+        "tls": "",
+        "x": 530,
+        "y": 560,
+        "wires": []
+    },
+    {
+        "id": "faeb36d17e8cee5e",
+        "type": "inject",
+        "z": "2eac1bfcf0280e9d",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 260,
+        "y": 560,
+        "wires": [
+            [
+                "275aee688200a853"
+            ]
+        ]
+    },
+    {
+        "id": "d27b6900728d5cc0",
+        "type": "function",
+        "z": "2eac1bfcf0280e9d",
+        "name": "Get ItemID in INT",
+        "func": "var StringItem = msg.payload.toString();\n\nvar ItemID = Number(StringItem);\n\nmsg.payload = ItemID;\n\n\nif (ItemID > 0) {\n    msg.payload = ItemID;\n    return msg\n}\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 170,
+        "y": 400,
+        "wires": [
+            [
+                "dd5f9ddf41ddc77a",
+                "f02cc791dfa8c13b"
+            ]
+        ]
+    },
+    {
+        "id": "f03d258c7aed9ea2",
+        "type": "file in",
+        "z": "2eac1bfcf0280e9d",
+        "name": "",
+        "filename": "C:\\Users\\Asus\\Downloads\\YOLO Result\\Real-time image detection\\outputmatlab.jpg",
+        "filenameType": "str",
+        "format": "",
+        "chunk": false,
+        "sendError": false,
+        "encoding": "none",
+        "allProps": false,
+        "x": 690,
+        "y": 420,
+        "wires": [
+            [
+                "a85b3df4f1dc3046"
+            ]
+        ]
+    },
+    {
+        "id": "a85b3df4f1dc3046",
+        "type": "function",
+        "z": "2eac1bfcf0280e9d",
+        "name": "toBuffer",
+        "func": "msg.payload = Buffer.from(msg.payload, \"base64\");\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1100,
+        "y": 420,
+        "wires": [
+            [
+                "d44c42ee1aa72bf5"
+            ]
+        ]
+    },
+    {
+        "id": "d44c42ee1aa72bf5",
+        "type": "jimp-image",
+        "z": "2eac1bfcf0280e9d",
+        "name": "",
+        "data": "payload",
+        "dataType": "msg",
+        "ret": "buf",
+        "parameter1": "",
+        "parameter1Type": "msg",
+        "parameter2": "",
+        "parameter2Type": "msg",
+        "parameter3": "",
+        "parameter3Type": "msg",
+        "parameter4": "",
+        "parameter4Type": "msg",
+        "parameter5": "",
+        "parameter5Type": "msg",
+        "parameter6": "",
+        "parameter6Type": "msg",
+        "parameter7": "",
+        "parameter7Type": "msg",
+        "parameter8": "",
+        "parameter8Type": "msg",
+        "sendProperty": "payload",
+        "sendPropertyType": "msg",
+        "parameterCount": 0,
+        "jimpFunction": "none",
+        "selectedJimpFunction": {
+            "name": "none",
+            "fn": "none",
+            "description": "Just loads the image.",
+            "parameters": []
+        },
+        "x": 810,
+        "y": 560,
+        "wires": [
+            [
+                "fb9672736ea1a0d9"
+            ]
+        ]
+    },
+    {
+        "id": "fb9672736ea1a0d9",
+        "type": "function",
+        "z": "2eac1bfcf0280e9d",
+        "name": "Send email to user",
+        "func": "var AccidentImage = msg.payload;\nmsg.topic = 'Support Vector Machine: Road Accident Detected';\nmsg.payload = \"Dear Hospital/Police,\\n\\nRoad accident has been detected at UCSI University.\\nPlease respond to the scene immediately.\";\nmsg.to = \"1001954392@ucsiuniversity.edu.my\";\nmsg.attachments = { filename: \"SVM_Accident.png\", content: AccidentImage };\n\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1010,
+        "y": 560,
+        "wires": [
+            [
+                "01581f16d226d6d1"
+            ]
+        ]
+    },
+    {
+        "id": "01581f16d226d6d1",
+        "type": "e-mail",
+        "z": "2eac1bfcf0280e9d",
+        "server": "smtp.gmail.com",
+        "port": "465",
+        "authtype": "BASIC",
+        "saslformat": true,
+        "token": "oauth2Response.access_token",
+        "secure": true,
+        "tls": true,
+        "name": "",
+        "dname": "ML Alert System",
+        "x": 1260,
+        "y": 560,
+        "wires": []
+    },
+    {
+        "id": "f02cc791dfa8c13b",
+        "type": "delay",
+        "z": "2eac1bfcf0280e9d",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "2",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 400,
+        "y": 320,
+        "wires": [
+            [
+                "f03d258c7aed9ea2",
+                "e8c5c7caa90551de"
+            ]
+        ]
+    }
+]
